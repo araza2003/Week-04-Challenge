@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Challenge Experience - BSCS 633</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+    <header>
+      Challenge Experience - BSCS 633 Internet Application Development
+    </header>
+
+    <main>
+      <section>
+        <h2>Introduction</h2>
+        <p>
+          As part of the BSCS 633 Internet Application Development course, a
+          challenge was held between two groups of 10 members each. Each team
+          selected a problem from the first four chapters of Jeffrey C.
+          Jackson's *Web Technologies* book and presented it as a challenge for
+          the other group to solve. Here's a detailed account of our experience.
+        </p>
+      </section>
+
+      <section class="game">
+        <h1>Mastermind Text Game</h1>
+        <button id="startBtn">Start Game</button>
+
+        <script>
+          // Utility function to generate a random integer between min and max inclusive
+          function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+          }
+
+          // Function to generate a secret code: an array of 4 distinct numbers from 1 to 6
+          function generateSecretCode() {
+            let available = [1, 2, 3, 4, 5, 6];
+            let code = [];
+            for (let i = 0; i < 4; i++) {
+              let idx = getRandomInt(0, available.length - 1);
+              code.push(available[idx]);
+              available.splice(idx, 1); // Remove used number to ensure uniqueness
+            }
+            return code;
+          }
+
+          // Function to score a guess against the secret code
+          function scoreGuess(secret, guess) {
+            let blacks = 0; // Correct position
+            let whites = 0; // Correct number but wrong position
+
+            // Count black pegs (correct number in correct position)
+            for (let i = 0; i < 4; i++) {
+              if (guess[i] === secret[i]) {
+                blacks++;
+              }
+            }
+
+            // Count white pegs (correct number but wrong position)
+            let common = guess.filter((num) => secret.includes(num)).length;
+            whites = common - blacks;
+
+            //console.log('Secret Code:', secret);
+
+            return { blacks, whites };
+          }
+
+          // Main game function with input validation and guess limit
+          function startGame() {
+            const secretCode = generateSecretCode();
+            let guessCount = 0;
+            let solved = false;
+            const maxGuesses = 10; // Set maximum number of guesses
+
+            // Uncomment the line below for debugging to see the secret code in console
+            // console.log('Secret Code:', secretCode);
+
+            while (!solved && guessCount < maxGuesses) {
+              let input = prompt(
+                "Enter your guess (four distinct numbers between 1 and 6, separated by spaces):"
+              );
+
+              // If the user cancels the prompt, end the game
+              if (input === null) {
+                alert("Game cancelled.");
+                return;
+              }
+
+              // Parse and validate input
+              let guess = input.trim().split(/\s+/).map(Number);
+
+              // Input Validation: Check for exactly four numbers
+              if (guess.length !== 4) {
+                alert("Invalid input. Please enter exactly four numbers.");
+                continue; // Restart the loop for a new input
+              }
+
+              // Input Validation: Check if all entries are numbers between 1 and 6
+              if (guess.some((num) => isNaN(num) || num < 1 || num > 6)) {
+                alert(
+                  "Invalid input. Ensure all entries are numbers between 1 and 6."
+                );
+                continue;
+              }
+
+              // Input Validation: Check for duplicate number set is used to eliminate duplicate entity
+              let uniqueNumbers = new Set(guess);
+              if (uniqueNumbers.size !== 4) {
+                alert(
+                  "Numbers must be distinct. Please enter four unique numbers."
+                );
+                continue;
+              }
+
+              // Increase guess count
+              guessCount++;
+
+              // Score the guess destructor
+              let { blacks, whites } = scoreGuess(secretCode, guess);
+
+              alert(
+                `Your guess: ${guess.join(
+                  " "
+                )}\nScore: ${blacks} black peg(s), ${whites} white peg(s)`
+              );
+
+              // Check if the guess is completely correct
+              if (blacks === 4) {
+                solved = true;
+                alert(
+                  `Congratulations! You solved the code in ${guessCount} guesses.`
+                );
+              } else if (guessCount === maxGuesses) {
+                alert(
+                  `Game over! You've used all ${maxGuesses} guesses. The code was ${secretCode.join(
+                    " "
+                  )}.`
+                );
+              }
+            }
+          }
+
+          // Attach event listener to start button
+          document
+            .getElementById("startBtn")
+            .addEventListener("click", startGame);
+        </script>
+      </section>
+
+      <section class="flow-diagram">
+        <h2>Flow Diagram</h2>
+        <p>
+          Below is the flow diagram of the problem our team selected and solved:
+        </p>
+        <div class="flowchart">
+        <img src="FlowDiagram.jpg" alt="Flow Diagram" />
+    </div>
+      </section>
+
+      <section class="source-code">
+        <h2>Source Code</h2>
+        <p>Here is the source code for the problem we solved:</p>
+        <pre><code>&lt;!DOCTYPE html&gt;
+                &lt;html lang="en"&gt;
+                &lt;head&gt;
+                  &lt;meta charset="UTF-8" /&gt;
+                  &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+                  &lt;title&gt;Mastermind Text Game&lt;/title&gt;
+                  &lt;style&gt;
+                    body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f0f0f0;
+                      text-align: center;
+                      padding-top: 50px;
+                    }
+                    h1 {
+                      color: #333;
+                    }
+                    #startBtn {
+                      padding: 10px 20px;
+                      font-size: 1.2em;
+                      background-color: #007BFF;
+                      color: white;
+                      border: none;
+                      border-radius: 5px;
+                      cursor: pointer;
+                    }
+                    #startBtn:hover {
+                      background-color: #0056b3;
+                    }
+                  &lt;/style&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                
+                  &lt;h1&gt;Mastermind Text Game&lt;/h1&gt;
+                  &lt;button id="startBtn"&gt;Start Game&lt;/button&gt;
+                
+                  &lt;script&gt;
+                    // Utility function to generate a random integer between min and max inclusive
+                    function getRandomInt(min, max) {
+                      return Math.floor(Math.random() * (max - min + 1)) + min;
+                    }
+                
+                    // Function to generate a secret code: an array of 4 distinct numbers from 1 to 6
+                    function generateSecretCode() {
+                      let available = [1, 2, 3, 4, 5, 6];
+                      let code = [];
+                      for (let i = 0; i &lt; 4; i++) {
+                        let idx = getRandomInt(0, available.length - 1);
+                        code.push(available[idx]);
+                        available.splice(idx, 1); // Remove used number to ensure uniqueness
+                      }
+                      return code;
+                    }
+                
+                    // Function to score a guess against the secret code
+                    function scoreGuess(secret, guess) {
+                      let blacks = 0;   // Correct position
+                      let whites = 0;   // Correct number but wrong position 
+                
+                      // Count black pegs (correct number in correct position)
+                      for (let i = 0; i &lt; 4; i++) {
+                        if (guess[i] === secret[i]) {
+                          blacks++;
+                        }
+                      }
+                
+                      // Count white pegs (correct number but wrong position)
+                      let common = guess.filter(num =&gt; secret.includes(num)).length;
+                      whites = common - blacks;
+                
+                      //console.log('Secret Code:', secret);
+                
+                      return { blacks, whites };
+                    }
+                
+                    // Main game function with input validation and guess limit
+                    function startGame() {
+                      const secretCode = generateSecretCode();
+                      let guessCount = 0;
+                      let solved = false;
+                      const maxGuesses = 10; // Set maximum number of guesses
+                
+                      // Uncomment the line below for debugging to see the secret code in console
+                      // console.log('Secret Code:', secretCode);
+                
+                      while (!solved && guessCount &lt; maxGuesses) {
+                        let input = prompt("Enter your guess (four distinct numbers between 1 and 6, separated by spaces):");
+                        
+                        // If the user cancels the prompt, end the game
+                        if (input === null) {
+                          alert("Game cancelled.");
+                          return;
+                        }
+                
+                        // Parse and validate input
+                        let guess = input.trim().split(/\s+/).map(Number);
+                
+                        // Input Validation: Check for exactly four numbers
+                        if (guess.length !== 4) {
+                          alert("Invalid input. Please enter exactly four numbers.");
+                          continue; // Restart the loop for a new input
+                        }
+                
+                        // Input Validation: Check if all entries are numbers between 1 and 6
+                        if (guess.some(num =&gt; isNaN(num) || num &lt; 1 || num &gt; 6)) {
+                          alert("Invalid input. Ensure all entries are numbers between 1 and 6.");
+                          continue; 
+                        }
+                
+                        // Input Validation: Check for duplicate number set is used to eliminate duplicate entity 
+                        let uniqueNumbers = new Set(guess);
+                        if (uniqueNumbers.size !== 4) {
+                          alert("Numbers must be distinct. Please enter four unique numbers.");
+                          continue; 
+                        }
+                
+                        // Increase guess count
+                        guessCount++;
+                
+                        // Score the guess destructor
+                        let { blacks, whites } = scoreGuess(secretCode, guess);
+                
+                       
+                        alert(`Your guess: ${guess.join(' ')}\nScore: ${blacks} black peg(s), ${whites} white peg(s)`);
+                
+                        // Check if the guess is completely correct
+                        if (blacks === 4) {
+                          solved = true;
+                          alert(`Congratulations! You solved the code in ${guessCount} guesses.`);
+                        } else if (guessCount === maxGuesses) {
+                          alert(`Game over! You've used all ${maxGuesses} guesses. The code was ${secretCode.join(' ')}.`);
+                        }
+                      }
+                    }
+                
+                    // Attach event listener to start button
+                    document.getElementById('startBtn').addEventListener('click', startGame);
+                  &lt;/script&gt;
+                
+                &lt;/body&gt;
+                &lt;/html&gt;</code></pre>
+      </section>
+
+     
+
+      <section class="team-members">
+        <h2>Team Members</h2>
+        <div class="allmember">
+            <div class="members">
+                <p>
+                    Each team member played an integral role in the challenge. Here is a
+                    list of our group members:
+                </p>
+                <ul>
+                <li>Ahmed Raza (B21110006009)</li>
+                <li>Dinesh Kumar (B21110006026)</li>
+                <li>Syed Muhammad Abbas Shah (B21110006131)</li>
+                <li>Syed Zohaib Ahmed Qadri (B21110006142)</li>
+                <li>Muhammad Waqas Ansari (B21110006095)</li>
+                <li>Hamza Abdeali (B21110006036)</li>
+                <li>Zoya Ali (B21110006168)</li>
+                <li>Rafia Asim (B23110004006)</li>
+                <li>Rimsha Masood (B23110004008)</li>
+                <li>Saman Aslam (B23110004009)</li>
+                </ul>
+            </div>
+
+            <div class="memberimg">
+    
+                <img src="2.png" alt="group image">
+            </div>
+        </div>
+
+      </section>
+
+      <section class="questions">
+        <h2>Questions and Answers</h2>
+        <p>
+          We faced tricky questions from the opposing team during the Q&A
+          session. Here are some highlights:
+        </p>
+        <ul>
+          <li>
+            Why did you not apply margin on the body tag?
+          </li>
+          <li>
+            How did you calculate the black and white pegs in the game?
+          </li>
+          <li>
+            How will the code react if the user enters alphabets instead of numbers?
+          </li>
+        </ul>
+      </section>
+
+      <section class="reflection">
+        <h2>Reflection</h2>
+        <h3>By: Ahmed Raza</h3>
+        <p>
+            As a member of Team A-G6 in the BSCS 633 Internet Application Development challenge, my experience was both challenging and enriching. Our team selected a problem from the "Project" section of the 4th chapter of Jeffrey C. Jackson's Web Technologies, and we presented it to the other group. After explaining the problem and its relevance, we spent 15 minutes brainstorming and devising a solution. During the explanation phase, each of us took turns walking through the flow diagram and the code we developed. The Q&A session that followed tested our understanding and ability to defend our solution, and we were able to successfully counter the tricky questions posed by the other team. The challenge also gave us an opportunity to analyze the other team's approach, and after completing the task, we answered five follow-up questions. It was a rewarding experience, where I was able to showcase my problem-solving skills and collaborate effectively with my team. Ultimately, it was a great learning opportunity, and I felt proud of our performance.
+        </p>
+
+        <h3>By: Dinesh Kumar</h3>
+        <p>
+            Participating in the BSCS 633 challenge as a member of Team A-G6 was an exciting experience. Collaborating with my team to select a problem and present it to the other group was both rewarding and insightful. The Q&A session tested our critical thinking, and I was proud of how well we handled the pressure and defended our solution.
+        </p>
+
+        <h3>By: Syed Muhammad Abbas Shah</h3>
+        <p>
+            The BSCS 633 challenge was an incredible learning experience for me as part of Team A-G6. From choosing a problem to explaining our solution and answering tough questions, every step helped me grow as a team player and problem solver. It was fascinating to engage with both our team and the opposing group.
+        </p>
+
+        <h3>By: Syed Zohaib Ahmed Qadri</h3>
+        <p>
+            Being part of Team A-G6 in the BSCS 633 challenge was a memorable experience. I enjoyed presenting our problem and collaborating on its solution, especially when faced with complex questions during the Q&A. It was a moment of pride to represent my team and demonstrate our collective effort.
+        </p>
+
+        <h3>By: Muhammad Waqas Ansari</h3>
+        <p>
+            I spent 5-6 hours  learning HTML, CSS, and JavaScript, and it was an eye-opening experience. I discovered that I could view a website on my phone by using its IP address while connected to the same network, instead of relying solely on inspect elements. Working with a team where everyone brought unique skills made the process highly efficient and enjoyable. This experience has further motivated me to pursue web development as a career, especially as I continue learning the MERNstack.
+        </p>
+
+        <h3>By: Hamza Abdeali</h3>
+        <p>
+            The challenge in BSCS 633 was a true test of teamwork and problem-solving. Representing Team A-G6, I had the chance to contribute to a thoughtful explanation of our solution and engage in a lively discussion during the Q&A. The event highlighted the importance of collaboration and preparation.
+        </p>
+
+        <h3>By: Zoya Ali</h3>
+        <p>
+            As a member of Team A-G6, the BSCS 633 challenge was both thrilling and educational. The opportunity to defend our solution under scrutiny from the other team helped me sharpen my reasoning skills. It was a rewarding experience to see our collective efforts come together.
+        </p>
+        <h3>By: Rafia Asim</h3>
+        <p>
+            Participating in the BSCS 633 challenge with Team A-G6 was a unique experience. From breaking down the problem to presenting our flow diagram and solution, it was gratifying to see our teamwork in action. The dynamic exchange during the Q&A was especially engaging.
+        </p>
+
+        <h3>By: Rimsha Masood</h3>
+        <p>
+            The BSCS 633 challenge was an enriching experience as a member of Team A-G6. Explaining our selected problem and collaborating on the solution strengthened my analytical skills. The Q&A session was an exciting opportunity to showcase our knowledge and teamwork.
+        </p>
+
+        <h3>By: Saman Aslam</h3>
+        <p>
+            Representing Team A-G6 in the BSCS 633 challenge was an unforgettable experience. I enjoyed the process of selecting and solving a problem, working with my team, and defending our approach. The event highlighted my ability to think critically under pressure.
+        </p>
+
+      </section>
+    </main>
+
+    <footer>&copy; 2025 BSCS 633 - University of Karachi | Team A-G6</footer>
+
+    <script>
+      // Add interactivity here if needed
+      console.log("Website loaded successfully.");
+    </script>
+  </body>
+</html>

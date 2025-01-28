@@ -1,0 +1,113 @@
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+header {
+  background-color: #4caf50;
+  color: white;
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+section {
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #4caf50;
+}
+.flowchart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.flow-diagram img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+pre {
+  background: #f7f7f7;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid #ddd;
+}
+
+.team-members ul {
+  /* list-style: none; */
+  padding: 0;
+  margin-left: 15px;
+}
+
+.team-members li {
+  margin: 0.5rem 0;
+}
+.allmember {
+  display: flex;
+  flex-direction: row;
+}
+.members {
+  width: 50%;
+}
+.memberimg {
+  width: 50%;
+}
+.memberimg img {
+  width: 80%;
+  border: 6px solid #4caf50;
+  border-radius: 20px;
+  margin-left: 30px;
+}
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.questions {
+  margin-top: 1rem;
+}
+
+.game {
+  font-family: Arial, sans-serif;
+  /* background-color: #f0f0f0; */
+  text-align: center;
+  padding-top: 50px;
+}
+h1 {
+  color: #333;
+}
+#startBtn {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#startBtn:hover {
+  background-color: #0056b3;
+}
